@@ -1,12 +1,12 @@
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ErrorPage from './pages/error-page';
-import About from './pages/About';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Base from './components/Base';
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorPage from "./pages/error-page";
+import About from "./pages/About";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Services from "./pages/Services";
 
 const router = createBrowserRouter([
   {
@@ -29,14 +29,15 @@ const router = createBrowserRouter([
     element: <About />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: "/services",
+    element: <Services />,
+    errorElement: <ErrorPage />,
+  },
 ]);
 
 function App() {
-  return (
-    <Base>
-      <RouterProvider router={router}/>
-    </Base>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
