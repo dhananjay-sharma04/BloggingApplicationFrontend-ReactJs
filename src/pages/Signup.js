@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 import Base from "../components/Base";
 import { useState } from "react";
+import registerUser from "../services/AuthSvc";
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -22,7 +23,7 @@ const Signup = () => {
     about: "",
   });
 
-  const resetData = () => {
+   const resetData = () => {
     setData({
       name: "",
       email: "",
@@ -32,17 +33,19 @@ const Signup = () => {
   };
 
   const submitForm = (event) => {
-    event.preventDefault()
+    event.preventDefault(); // Prevent the default form submission behavior
 
-    //validate date
+    // Validate data
 
-    //call server api for sending data
-  }
-
-  const [errors, setErrors] = useState({
-    errors: {},
-    isError: false,
-  });
+    //call api to the server
+    registerUser(event, data);
+    setData({
+      name: "",
+      email: "",
+      password: "",
+      about: "",
+    });
+  };
 
   //handle changes
   const handleChange = (event, property) => {
@@ -59,11 +62,9 @@ const Signup = () => {
                 <h3>Fill Information to Register!!!</h3>
               </CardHeader>
               <CardBody>
-
                 {/* creating Form */}
 
                 <Form onSubmit={submitForm}>
-
                   {/* Name field */}
                   <FormGroup>
                     <Label for="name">Name</Label>
@@ -71,6 +72,7 @@ const Signup = () => {
                       type="text"
                       placeholder="Enter your name"
                       id="name"
+                      required
                       onChange={(e) => handleChange(e, "name")}
                       value={data.name}
                     />
@@ -83,6 +85,7 @@ const Signup = () => {
                       type="email"
                       placeholder="Enter your email"
                       id="email"
+                      required
                       onChange={(e) => handleChange(e, "email")}
                       value={data.email}
                     />
@@ -95,6 +98,7 @@ const Signup = () => {
                       type="password"
                       placeholder="Enter your password"
                       id="password"
+                      required
                       onChange={(e) => handleChange(e, "password")}
                       valid={data.password}
                     />
@@ -107,6 +111,7 @@ const Signup = () => {
                       type="textarea"
                       placeholder="Enter about"
                       id="about"
+                      required
                       onChange={(e) => handleChange(e, "about")}
                       value={data.about}
                       style={{ height: "250px" }}
