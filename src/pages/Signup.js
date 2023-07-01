@@ -6,6 +6,7 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
   FormGroup,
   Input,
   Label,
@@ -13,7 +14,8 @@ import {
 } from "reactstrap";
 import Base from "../components/Base";
 import { useState } from "react";
-import registerUser from "../services/AuthSvc";
+import { signUp } from "../services/userSvc";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -23,7 +25,9 @@ const Signup = () => {
     about: "",
   });
 
-   const resetData = () => {
+  const [errors, setError] = useState({});
+
+  const resetData = () => {
     setData({
       name: "",
       email: "",
@@ -35,16 +39,26 @@ const Signup = () => {
   const submitForm = (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
 
-    // Validate data
+    // Clearing error
+    setError({});
 
     //call api to the server
-    registerUser(event, data);
-    setData({
-      name: "",
-      email: "",
-      password: "",
-      about: "",
-    });
+    signUp(data)
+      .then((response) => {
+        if (response.status === "OK") {
+          toast.success(response.message);
+          resetData()
+        } else if (response.status === "BAD_REQUEST") {
+          toast.warning(response.message);
+          //handle error to show form
+          setError({ ...response?.data?.error });
+        } else {
+          toast.error(response.message);
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   //handle changes
@@ -72,10 +86,11 @@ const Signup = () => {
                       type="text"
                       placeholder="Enter your name"
                       id="name"
-                      required
                       onChange={(e) => handleChange(e, "name")}
                       value={data.name}
+                      invalid={errors?.name ? true : false}
                     />
+                    <FormFeedback>{errors?.name}</FormFeedback>
                   </FormGroup>
 
                   {/* Email field */}
@@ -85,10 +100,11 @@ const Signup = () => {
                       type="email"
                       placeholder="Enter your email"
                       id="email"
-                      required
                       onChange={(e) => handleChange(e, "email")}
                       value={data.email}
+                      invalid={errors?.email ? true : false}
                     />
+                    <FormFeedback>{errors?.email}</FormFeedback>
                   </FormGroup>
 
                   {/* Password field */}
@@ -98,10 +114,11 @@ const Signup = () => {
                       type="password"
                       placeholder="Enter your password"
                       id="password"
-                      required
                       onChange={(e) => handleChange(e, "password")}
                       valid={data.password}
+                      invalid={errors?.password ? true : false}
                     />
+                    <FormFeedback>{errors?.password}</FormFeedback>
                   </FormGroup>
 
                   {/* About field */}
@@ -111,11 +128,12 @@ const Signup = () => {
                       type="textarea"
                       placeholder="Enter about"
                       id="about"
-                      required
                       onChange={(e) => handleChange(e, "about")}
                       value={data.about}
+                      invalid={errors?.about ? true : false}
                       style={{ height: "250px" }}
                     />
+                    <FormFeedback>{errors?.about}</FormFeedback>
                   </FormGroup>
 
                   <Container className="text-center">
@@ -126,7 +144,7 @@ const Signup = () => {
                       className="ms-2"
                       type="reset"
                     >
-                      Reset
+                      Clear
                     </Button>
                   </Container>
                 </Form>
