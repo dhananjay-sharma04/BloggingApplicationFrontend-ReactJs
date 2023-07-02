@@ -17,8 +17,12 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { login } from "../services/userSvc";
 import { doLogin } from "../services/AuthenticationSvc";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+
+  const navigate = useNavigate()
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -46,7 +50,8 @@ const Login = () => {
 
           //save the data to localstorage
           doLogin(response.data.login, () => {
-            console.log("Token saved")
+            //redirect to user dashboard page
+            navigate("/user/dashboard")
           })
 
           toast.success(response.message);

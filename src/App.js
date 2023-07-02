@@ -9,6 +9,9 @@ import Signup from "./pages/Signup";
 import Services from "./pages/Services";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PrivateRoute from "./components/PrivateRoute";
+import UserDashboard from "./pages/user_route/UserDashboard";
+import { ProfileInfo } from "./pages/user_route/ProfileInfo";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +38,23 @@ const router = createBrowserRouter([
     path: "/services",
     element: <Services />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "/user",
+    element: <PrivateRoute />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "dashboard",
+        element: <UserDashboard />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "profile",
+        element: <ProfileInfo />,
+        errorElement: <ErrorPage />,
+      },
+    ],
   },
 ]);
 
