@@ -83,7 +83,7 @@ const CustomNavbar = () => {
           <Nav navbar>
             {login && (
               <>
-                <UncontrolledDropdown nav inNavbar>
+                <UncontrolledDropdown>
                   <DropdownToggle nav caret>
                     {user.name}
                   </DropdownToggle>
