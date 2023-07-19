@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/PrivateRoute";
 import UserDashboard from "./pages/user_route/UserDashboard";
 import { ProfileInfo } from "./pages/user_route/ProfileInfo";
+import PostPage from "./pages/PostPage";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: "/posts/:id",
+    element: <PostPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
     path: "/user",
     element: <PrivateRoute />,
     errorElement: <ErrorPage />,
@@ -61,7 +67,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div>
-      <ToastContainer className="mt-5"/>
+      <ToastContainer className="mt-5" />
       <RouterProvider router={router} />
     </div>
   );
