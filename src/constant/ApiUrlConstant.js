@@ -3,3 +3,7 @@ export const BASE_URL = "http://localhost:9090/"
 export const REGISTER_USER = "auth/signUp"
 
 export const LOGIN_USER = "auth/login"
+
+export const CATEGORY_LIST = "categories/get"
+
+export const CREATE_POST = "posts/add"
