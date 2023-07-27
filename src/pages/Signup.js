@@ -25,6 +25,8 @@ const Signup = () => {
     about: "",
   });
 
+  const [image, setImage] = useState(null);
+
   const [errors, setError] = useState({});
 
   const resetData = () => {
@@ -34,6 +36,12 @@ const Signup = () => {
       password: "",
       about: "",
     });
+    setImage(null)
+  };
+
+  const handleFileChange = (event) => {
+    setImage(event.target.files[0]);
+    console.log(image)
   };
 
   const submitForm = (event) => {
@@ -43,11 +51,11 @@ const Signup = () => {
     setError({});
 
     //call api to the server
-    signUp(data)
+    signUp(data, image)
       .then((response) => {
         if (response.status === "OK") {
           toast.success(response.message);
-          resetData()
+          resetData();
         } else if (response.status === "BAD_REQUEST") {
           toast.warning(response.message);
           //handle error to show form
@@ -119,6 +127,16 @@ const Signup = () => {
                       invalid={errors?.password ? true : false}
                     />
                     <FormFeedback>{errors?.password}</FormFeedback>
+                  </FormGroup>
+
+                  {/* image field */}
+                  <FormGroup>
+                      <Label for="image">Profile picture</Label>
+                      <Input
+                        id="image"
+                        type="file"
+                        onChange={handleFileChange}
+                      />
                   </FormGroup>
 
                   {/* About field */}

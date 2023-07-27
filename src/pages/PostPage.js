@@ -38,7 +38,7 @@ const PostPage = () => {
       .catch((error) => {
         toast.error(error.message);
       });
-  }, [comment]);
+  }, []);
 
   const handleChange = (event, property) => {
     setComment({ ...comment, [property]: event.target.value });

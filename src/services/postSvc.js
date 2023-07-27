@@ -2,12 +2,19 @@ import { CREATE_POST, PAGEABLE_POST_LIST } from "../constant/ApiUrlConstant";
 import { getCurrentUserDetail } from "./AuthenticationSvc";
 import { myAxios, privateAxios } from "./helper";
 
-export const savePost = async (postData) => {
+export const savePost = async (postData, image) => {
+  let formData = new FormData();
+  formData.append("postDto", JSON.stringify(postData));
+  if (image != null) {
+    formData.append("image", image)
+  }
   const response = await privateAxios.post(
-    `${CREATE_POST}?userId=${getCurrentUserDetail().id}&catTitle=${
-      postData.catTitle
-    }`,
-    postData
+    CREATE_POST +
+      "/" +
+      `${getCurrentUserDetail().id}` +
+      "/" +
+      `${postData.catTitle}`,
+    formData
   );
   return response.data;
 };

@@ -18,7 +18,6 @@ import JoditEditor from "jodit-react";
 import { savePost } from "../services/postSvc";
 
 const AddPost = () => {
-
   const editor = useRef(null);
 
   const [errors, setError] = useState({});
@@ -29,12 +28,15 @@ const AddPost = () => {
     catTitle: "",
   });
 
+  const [image, setImage] = useState(null);
+
   const resetPost = () => {
     setPost({
       title: "",
       content: "",
       catTitle: "",
     });
+    setImage(null)
   };
 
   const [categories, setCategories] = useState([]);
@@ -57,10 +59,14 @@ const AddPost = () => {
     setPost({ ...post, [property]: event.target.value });
   };
 
+  const handleFileChange = (event) => {
+    setImage(event.target.files[0]);
+  };
+
   const createPost = (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
 
-    savePost(post)
+    savePost(post, image)
       .then((response) => {
         if (response.status === "OK") {
           toast.success(response.message);
@@ -117,6 +123,16 @@ const AddPost = () => {
                     }
                   />
                   <FormFeedback>{errors?.content}</FormFeedback>
+                </div>
+
+                {/* File field */}
+                <div className="mt-3">
+                  <Label for="image">Select Post Banner</Label>
+                  <Input
+                    id="image"
+                    type="file"
+                    onChange={handleFileChange}
+                  />
                 </div>
 
                 {/* Post Category */}
