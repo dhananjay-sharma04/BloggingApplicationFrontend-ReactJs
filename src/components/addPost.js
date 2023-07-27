@@ -6,6 +6,7 @@ import {
   Col,
   Container,
   Form,
+  FormFeedback,
   Input,
   Label,
   Row,
@@ -17,7 +18,10 @@ import JoditEditor from "jodit-react";
 import { savePost } from "../services/postSvc";
 
 const AddPost = () => {
+
   const editor = useRef(null);
+
+  const [errors, setError] = useState({});
 
   const [post, setPost] = useState({
     title: "",
@@ -64,7 +68,8 @@ const AddPost = () => {
         } else if (response.status === "BAD_REQUEST") {
           toast.warning(response.message);
           //handle error to show form
-          // setError({ ...response?.data?.error });
+          setError({ ...response?.data?.error });
+          console.log(response?.data?.error);
         } else {
           toast.error(response.message);
         }
@@ -84,7 +89,6 @@ const AddPost = () => {
             </CardHeader>
             <CardBody>
               <Form onSubmit={createPost}>
-                {JSON.stringify(post)}
                 {/* Post title */}
                 <div className="my-3">
                   <Label for="title">Post Title</Label>
@@ -92,9 +96,12 @@ const AddPost = () => {
                     type="text"
                     id="title"
                     onChange={(e) => handleChange(e, "title")}
+                    invalid={errors?.title ? true : false}
+                    value={post.title}
                     placeholder="Enter Here"
                     className="rounded-0"
                   />
+                  <FormFeedback>{errors?.title}</FormFeedback>
                 </div>
 
                 {/* Post content */}
@@ -104,10 +111,12 @@ const AddPost = () => {
                     ref={editor}
                     height="1000px"
                     value={post.content}
+                    invalid={errors?.content ? true : false}
                     onChange={(newContent) =>
                       setPost({ ...post, content: newContent })
                     }
                   />
+                  <FormFeedback>{errors?.content}</FormFeedback>
                 </div>
 
                 {/* Post Category */}
@@ -118,6 +127,7 @@ const AddPost = () => {
                     id="catTitle"
                     className="rounded-0"
                     onChange={(e) => handleChange(e, "catTitle")}
+                    invalid={errors?.catTitle ? true : false}
                     defaultValue={""}
                   >
                     <option disabled value={""}>
@@ -129,6 +139,7 @@ const AddPost = () => {
                       </option>
                     ))}
                   </Input>
+                  <FormFeedback>{errors?.catgTitle}</FormFeedback>
                 </div>
 
                 {/* Button */}
